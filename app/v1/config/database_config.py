@@ -1,0 +1,5 @@
+DB_HOST = 'localhost'
+DB_PORT = '3306'
+DB_NAME = 'two_football'
+DB_USERNAME = 'vking34'
+DB_PASSWORD = 'vking34'

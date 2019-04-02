@@ -5,7 +5,7 @@ from ..model.user import User
 from ..schema.user_schema import UserSchema
 from app.v1.generic.response.error_response import SIGNUP_EXISTING_USER_ERROR
 
-signup_blueprint = Blueprint('__name__', __name__)
+signup_blueprint = Blueprint('signup_blueprint', __name__)
 
 
 @signup_blueprint.route('/signup', methods=['POST'])

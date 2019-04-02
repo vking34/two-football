@@ -3,3 +3,6 @@ pip install -r requirements.txt
 
 # queries in SQLAlchemy
 http://www.leeladharan.com/sqlalchemy-query-with-or-and-like-common-filters
+
+# bcrypt password
+https://www.rithmschool.com/courses/intermediate-flask/hashing-passwords-flask

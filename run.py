@@ -1,4 +1,5 @@
-from app import create_app, db
+from app import create_app
+# from flask_bcrypt import Bcrypt
 
 #run
 if __name__ == '__main__':

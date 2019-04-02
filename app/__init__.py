@@ -1,9 +1,10 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from app.v1.config.database_config import *
+from flask_bcrypt import Bcrypt
 
 db = SQLAlchemy()
-
+bcrypt = Bcrypt()
 
 def create_app():
     app = Flask(__name__)
@@ -18,10 +19,11 @@ def create_app():
 
     from app.v1.component.user.controller.user_controller import users_blueprint
     from app.v1.component.user.controller.signup_controller import signup_blueprint
+    from app.v1.component.user.controller.login_controller import login_blueprint
 
     app.register_blueprint(users_blueprint, url_prefix='/api/v1')
     app.register_blueprint(signup_blueprint)
-
+    app.register_blueprint(login_blueprint)
     return app
 
 

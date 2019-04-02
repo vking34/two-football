@@ -1,6 +1,7 @@
 from app import db
 from sqlalchemy import or_
 from app.v1.generic.constant.role_constant import ROLE_USER
+from app import bcrypt
 
 
 class User(db.Model):
@@ -18,7 +19,9 @@ class User(db.Model):
 
     def __init__(self, username, password, name, phone, email):
         self.username = username
-        self.password = password
+
+        self.password = bcrypt.generate_password_hash(password).decode('UTF-8')
+        # self.password = password
         self.name = name
         self.phone = phone
         self.email = email

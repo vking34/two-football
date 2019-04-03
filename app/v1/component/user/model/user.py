@@ -30,9 +30,12 @@ class User(db.Model):
         self.picture = ''
 
     def save(self):
-        record = db.session.add(self)
+        db.session.add(self)
         db.session.commit()
-        return record
+
+    def deposit(self, amount):
+        self.balance += amount
+        db.session.commit()
 
     @classmethod
     def find_users(cls):
@@ -45,3 +48,7 @@ class User(db.Model):
     @classmethod
     def find_user_by_username(cls, username):
         return cls.query.filter_by(username=username).first()
+
+    @classmethod
+    def find_user_by_id(cls, user_id):
+        return cls.query.filter_by(user_id=user_id).first()

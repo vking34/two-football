@@ -1,7 +1,11 @@
 from flask import jsonify, Blueprint, request
 from ..schema.authen_form import AuthenticationForm
+from ..schema.user_schema import UserSchema
 from ..model.user import User
 from app import bcrypt
+from app.v1.generic.response.error_response import FAIL_LOGIN
+from app.v1.generic.response.status_code import *
+from app.v1.generic.util.jwt_util import JwtUtil
 
 login_blueprint = Blueprint('login_blueprint', __name__)
 
@@ -19,24 +23,19 @@ def login():
             'status': False,
             'errors': result.errors
         })
-    print(request_login.get('username'))
 
     user = User.find_user_by_username(request_login.get('username'))
-
     if user is None:
-        return jsonify({
-            'status': False,
-            'message': 'Username/password is wrong',
-            'code': 201
-        }), 400
+        return jsonify(FAIL_LOGIN), BAD_REQUEST
 
-    print(user.password)
     if bcrypt.check_password_hash(user.password, request_login.get('password')) is False:
-        return jsonify({
-            'status': False,
-            'message': 'Username/password is wrong',
-            'code': 201
-        }), 400
+        return jsonify(FAIL_LOGIN), BAD_REQUEST
 
-    return "1"
+    token_object = JwtUtil.generate_token(user.user_id, user.role, user.username)
+    schema = UserSchema()
+    return jsonify({
+        'status': True,
+        'access_token': token_object.decode(),
+        'user': schema.dump(user).data
+    })
 

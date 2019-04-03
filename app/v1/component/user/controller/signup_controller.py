@@ -4,7 +4,7 @@ from marshmallow import ValidationError
 from ..model.user import User
 from ..schema.user_schema import UserSchema
 from app.v1.generic.response.error_response import SIGNUP_EXISTING_USER_ERROR
-
+from app.v1.generic.response.status_code import *
 signup_blueprint = Blueprint('signup_blueprint', __name__)
 
 
@@ -30,7 +30,7 @@ def sign_up():
                                           request_user.get('phone'),
                                           request_user.get('email'))
     if user_record is not None:
-        return jsonify(SIGNUP_EXISTING_USER_ERROR), 400
+        return jsonify(SIGNUP_EXISTING_USER_ERROR), BAD_REQUEST
 
     user_record = User(request_user.get('username'),
                        request_user.get('password'),

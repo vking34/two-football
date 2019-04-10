@@ -51,3 +51,4 @@ BAD_CARD_REQUEST = {
     'message': 'Payload consists an invalid card code / password.',
     'code': 501
 }
+

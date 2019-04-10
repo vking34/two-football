@@ -52,3 +52,20 @@ BAD_CARD_REQUEST = {
     'code': 501
 }
 
+ALREADY_USED_USERNAME = {
+    'status': False,
+    'message': 'Username is already used',
+    'code': 601
+}
+
+ALREADY_USED_PHONE = {
+    'status': False,
+    'message': 'Phone number is already used',
+    'code': 602
+}
+
+ALREADY_USED_EMAIL = {
+    'status': False,
+    'message': 'Email is already used',
+    'code': 603
+}

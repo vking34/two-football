@@ -52,3 +52,25 @@ class User(db.Model):
     @classmethod
     def find_user_by_id(cls, user_id):
         return cls.query.filter_by(user_id=user_id).first()
+
+    @classmethod
+    def find_user_by_email(cls, email):
+        return cls.query.filter_by(email=email).first()
+
+    @classmethod
+    def find_user_by_phone(cls, phone):
+        return cls.query.filter_by(phone=phone).first()
+
+    @classmethod
+    def update_user_by_id(cls, user_id, username, name, picture, phone, email):
+        user = cls.find_user_by_id(user_id)
+        if user is not None:
+            user.username = username
+            user.name = name
+            user.picture = picture
+            user.phone = phone
+            user.email = email
+            db.session.flush()
+            db.session.commit()
+            return user
+        return None

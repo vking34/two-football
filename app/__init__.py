@@ -38,18 +38,95 @@ def create_app():
     def fetch():
         global fetchingThread
 
-        print(fetchingThread.getName())
+        # print(fetchingThread.getName())
         fetchingThread = threading.Timer(POOL_TIME, fetch)
         fetchingThread.start()
 
         match_list = fetch3rdAPI()
 
-        for match in match_list:
-            match_id = int(match.get('match_id'))
-            print(match_id)
-
+        # with app_context to use SQLalchemy
         with app.app_context():
-            from app.v1.component.user.model.user import User
+            from app.v1.component.fixture.model.match import Match
+
+            for match in match_list:
+                match_id = int(match.get('match_id'))
+
+                # print('--------------------------------------')
+                # print(match_id)
+
+                league_id = int(match.get('league_id'))
+                if match.get('match_status') == '':
+                    hometeam_halftime_score = 0
+                    awayteam_halftime_score = 0
+                    hometeam_score = 0
+                    awayteam_score = 0
+                    yellow_card = 0
+                else:
+                    hometeam_halftime_score = int(match.get('match_hometeam_halftime_score'))
+                    awayteam_halftime_score = int(match.get('match_awayteam_halftime_score'))
+
+                    if match.get('match_hometeam_score') == '':
+                        hometeam_score = 0
+                    else:
+                        hometeam_score = int(match.get('match_hometeam_score'))
+
+                    if match.get('match_awayteam_score') == '':
+                        awayteam_score = 0
+                    else:
+                        awayteam_score = int(match.get('match_awayteam_score'))
+
+                    statistics = match.get('statistics')
+                    full_time = False
+                    for statistic in statistics:
+                        if statistic.get('type') == 'yellow cards':
+                            yellow_card = int(statistic.get('home')) + int(statistic.get('away'))
+                            full_time = True
+                            break
+                    if full_time is False:
+                        yellow_card = 0
+
+                print('match_hometeam_score: ' + str(hometeam_score))
+                print('match_hometeam_halftime_score: ' + str(hometeam_halftime_score))
+                print('yellow card: ' + str(yellow_card))
+
+                match_record = Match.find_match_by_id(match_id)
+                if match_record is None:
+                    # print('insert ' + str(match_id))
+                    match_record = Match(match_id=match_id,
+                                         league_id=league_id,
+                                         match_date=match.get('match_date'),
+                                         match_time=match.get('match_time'),
+                                         match_hometeam_name=match.get('match_hometeam_name'),
+                                         match_awayteam_name=match.get('match_awayteam_name'),
+                                         match_hometeam_halftime_score=hometeam_halftime_score,
+                                         match_awayteam_halftime_score=awayteam_halftime_score,
+                                         match_hometeam_score=hometeam_score,
+                                         match_awayteam_score=awayteam_score,
+                                         yellow_card=yellow_card,
+                                         match_status=match.get('match_status')
+                                         )
+                    match_record.save()
+                    continue
+
+                if match.get('match_status') != '' and match_record.match_status != 'FT':
+                    # update match
+                    # print('update ' + str(match_id))
+                    match_record.update(match_hometeam_halftime_score=hometeam_halftime_score,
+                                        match_awayteam_halftime_score=awayteam_halftime_score,
+                                        match_hometeam_score=hometeam_score,
+                                        match_awayteam_score=awayteam_score,
+                                        yellow_card=yellow_card,
+                                        match_status=match.get('match_status'))
+                    continue
+
+                if match.get('match_status') == 'FT' and match_record.match_status != 'FT':
+                    print('calculate ' + str(match_id))
+                    # calculate bets ...
+
+
+
+
+
 
 
 

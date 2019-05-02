@@ -2,7 +2,7 @@ import requests
 from datetime import datetime, timedelta
 import json
 
-POOL_TIME = 5
+POOL_TIME = 10
 
 ACTION = 'get_events'
 LEAGUE_ID = 63
@@ -24,7 +24,10 @@ def fetch3rdAPI():
               ('league_id', LEAGUE_ID),
               ('APIkey', API_KEY))
 
+    # bytes
     content = requests.get('https://apifootball.com/api/', params=params).content
+
+    # list
     match_list = json.loads(content.decode('utf8'))
 
     return match_list

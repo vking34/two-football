@@ -2,7 +2,7 @@ import requests
 from datetime import datetime, timedelta
 import json
 
-POOL_TIME = 10
+POOL_TIME = 30
 
 ACTION = 'get_events'
 LEAGUE_ID = 63

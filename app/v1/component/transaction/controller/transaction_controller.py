@@ -1,7 +1,7 @@
 from flask import jsonify, Blueprint, request
 from app.v1.generic.util.authorization_filter import pre_authorize
 from app.v1.generic.util.validator import validate_payload
-from app.v1.generic.constant.role_constant import *
+from app.v1.generic.constant.role_constant import ROLE_USER
 from app.v1.generic.response.error_response import FORBIDDEN_RESPONSE, BAD_CARD_REQUEST, USER_NOT_FOUND
 from app.v1.generic.response.status_code import *
 from ..schema.card_schema import CardSchema

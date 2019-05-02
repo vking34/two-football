@@ -37,6 +37,10 @@ class User(db.Model):
         self.balance += amount
         db.session.commit()
 
+    def decrease_balance(self, amount):
+        self.balance -= amount
+        db.session.commit()
+
     @classmethod
     def find_users(cls):
         return cls.query.all()

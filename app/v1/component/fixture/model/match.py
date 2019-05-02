@@ -1,6 +1,7 @@
 from app import db
 from app.v1.component.league.model.league import League
 
+
 class Match(db.Model):
 
     __tablename__ = 'fixture'

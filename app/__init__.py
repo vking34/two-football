@@ -29,11 +29,13 @@ def create_app():
     from app.v1.component.user.controller.signup_controller import signup_blueprint
     from app.v1.component.user.controller.login_controller import login_blueprint
     from app.v1.component.transaction.controller.transaction_controller import transaction
+    from app.v1.component.bet.controller.bet_controller import bet
 
     app.register_blueprint(signup_blueprint)
     app.register_blueprint(login_blueprint)
     app.register_blueprint(users_blueprint, url_prefix='/api/v1')
     app.register_blueprint(transaction, url_prefix='/api/v1')
+    app.register_blueprint(bet, url_prefix='/api/v1')
 
     def fetch():
         global fetchingThread

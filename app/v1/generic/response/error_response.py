@@ -52,3 +52,38 @@ BAD_CARD_REQUEST = {
     'code': 501
 }
 
+BAD_BET_REQUEST = {
+    'status': False,
+    'message': 'Bet type >= 0, Bet amount > 0',
+    'code': 601
+}
+
+MATCH_NOT_FOUND = {
+    'status': False,
+    'message': 'Match not found',
+    'code': 602
+}
+
+MATCH_FINISHED = {
+    'status': False,
+    'message': 'Match is finished',
+    'code': 603
+}
+
+MATCH_LIVE = {
+    'status': False,
+    'message': 'Match is live, you can not bet',
+    'code': 604
+}
+
+INVALID_BET_AMOUNT = {
+    'status': False,
+    'message': 'Bet amount must be lower than or equal to the balance of account',
+    'code': 605
+}
+
+BET_ALREADY = {
+    'status': False,
+    'message': 'Bet this type already',
+    'code': 606
+}

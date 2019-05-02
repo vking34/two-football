@@ -3,11 +3,12 @@ from app.v1.generic.util.authorization_filter import pre_authorize
 from app.v1.generic.util.validator import validate_payload
 from app.v1.generic.constant.role_constant import ROLE_USER
 from app.v1.generic.response.error_response import BAD_BET_REQUEST, MATCH_NOT_FOUND, MATCH_FINISHED, \
-    MATCH_LIVE, INVALID_BET_AMOUNT, BET_ALREADY
+    MATCH_LIVE, INVALID_BET_AMOUNT, BET_ALREADY, INVALID_TOKEN
 from app.v1.generic.response.status_code import *
 from app.v1.component.fixture.model.match import Match
 from app.v1.component.user.model.user import User
 from ..model.bet import Bet
+from ..schema.bet_request_schema import BetRequestSchema
 from ..schema.bet_schema import BetSchema
 import datetime
 
@@ -16,7 +17,7 @@ bet = Blueprint('bet', __name__)
 
 @bet.route('/matches/<int:match_id>/bets', methods=['POST'])
 @pre_authorize(ROLE_USER)
-@validate_payload(BetSchema, BAD_BET_REQUEST)
+@validate_payload(BetRequestSchema, BAD_BET_REQUEST)
 def bet_match(match_id, token_id):
     match = Match.find_match_by_id(match_id)
 
@@ -63,4 +64,18 @@ def bet_match(match_id, token_id):
         }
     }), OK
 
+
+@bet.route('/users/<int:user_id>/bets', methods=['GET'])
+@pre_authorize(ROLE_USER)
+def get_bets(user_id, token_id):
+    if user_id != token_id:
+        return jsonify(INVALID_TOKEN), FORBIDDEN
+
+    schema = BetSchema(many=True)
+    bets = schema.dump(Bet.find_bets_of_user(user_id)).data
+
+    return jsonify({
+        'status': True,
+        'bets': bets
+    })
 

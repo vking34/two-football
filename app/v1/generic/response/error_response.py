@@ -36,7 +36,7 @@ EXPIRED_TOKEN = {
 
 INVALID_TOKEN = {
     'status': False,
-    'message': 'Invalid access token',
+    'message': 'Invalid Access Token',
     'code': 305
 }
 

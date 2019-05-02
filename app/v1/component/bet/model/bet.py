@@ -1,10 +1,14 @@
 from app import db
+from app.v1.component.fixture.model.match import Match
+from sqlalchemy import desc
+
 
 class Bet(db.Model):
     __tablename__ = 'bet'
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), primary_key=True)
     match_id = db.Column(db.Integer, db.ForeignKey('fixture.match_id'), primary_key=True)
+    match = db.relation(Match)
     bet_type = db.Column(db.Integer, primary_key=True)
     bet_amount = db.Column(db.Integer, nullable=False)
     bet_content = db.Column(db.String(10), nullable=False)
@@ -29,3 +33,7 @@ class Bet(db.Model):
     @classmethod
     def find_bet(cls, user_id, match_id, bet_type):
         return cls.query.filter_by(user_id=user_id, match_id=match_id, bet_type=bet_type).first()
+
+    @classmethod
+    def find_bets_of_user(cls, user_id):
+        return cls.query.filter_by(user_id=user_id).order_by(desc('bet_time')).all()

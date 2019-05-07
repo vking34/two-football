@@ -1,7 +1,13 @@
-DB_HOST = 'localhost'
+# DB_HOST = 'localhost'
+# DB_PORT = '3306'
+# DB_NAME = 'two_football'
+# DB_USERNAME = 'vking34'
+# DB_PASSWORD = 'vking34'
+
+DB_HOST = '35.240.167.204'
 DB_PORT = '3306'
 DB_NAME = 'two_football'
-DB_USERNAME = 'vking34'
+DB_USERNAME = 'root'
 DB_PASSWORD = 'vking34'
 
 # DB_HOST = 'sql12.freesqldatabase.com'

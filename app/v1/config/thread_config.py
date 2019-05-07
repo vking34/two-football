@@ -2,7 +2,7 @@ import requests
 from datetime import datetime, timedelta
 import json
 
-POOL_TIME = 30
+POOL_TIME = 10
 
 ACTION = 'get_events'
 LEAGUE_ID = 63
@@ -12,7 +12,7 @@ API_KEY = 'ac2f0ea7166d4eb7ce9da12cfe706295023ba68ee9a060f3f4928709d4ef68e0'
 def fetch3rdAPI():
 
     today = datetime.now()
-    from_date = today - timedelta(days=1)
+    from_date = today - timedelta(days=3)
     to_date = today + timedelta(days=6)
 
     from_date_str = from_date.strftime('%y-%m-%d')

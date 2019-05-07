@@ -6,10 +6,10 @@ from app import create_app
 
 # run
 if __name__ == '__main__':
-    app = create_app()
+    flask_app = create_app()
 
 
     # debug=False to run background process
-    app.run(port=80, debug=False)
+    flask_app.run(port=80, debug=False)
 
     # app.run(port=80, debug=True)

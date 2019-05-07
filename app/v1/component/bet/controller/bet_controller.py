@@ -12,10 +12,10 @@ from ..schema.bet_request_schema import BetRequestSchema
 from ..schema.bet_schema import BetSchema
 import datetime
 
-bet = Blueprint('bet', __name__)
+bet_blueprint = Blueprint('bet_blueprint', __name__)
 
 
-@bet.route('/matches/<int:match_id>/bets', methods=['POST'])
+@bet_blueprint.route('/matches/<int:match_id>/bets', methods=['POST'])
 @pre_authorize(ROLE_USER)
 @validate_payload(BetRequestSchema, BAD_BET_REQUEST)
 def bet_match(match_id, token_id):
@@ -65,7 +65,7 @@ def bet_match(match_id, token_id):
     }), OK
 
 
-@bet.route('/users/<int:user_id>/bets', methods=['GET'])
+@bet_blueprint.route('/users/<int:user_id>/bets', methods=['GET'])
 @pre_authorize(ROLE_USER)
 def get_bets(user_id, token_id):
     if user_id != token_id:

@@ -1,6 +1,6 @@
 from app import db
 from app.v1.component.fixture.model.match import Match
-from sqlalchemy import desc
+from sqlalchemy import desc, asc
 
 
 class Bet(db.Model):
@@ -30,6 +30,11 @@ class Bet(db.Model):
         db.session.add(self)
         db.session.commit()
 
+    def end(self, bet_gain):
+        self.bet_gain = bet_gain
+        self.bet_status = 'COMPLETE'
+        db.session.commit()
+
     @classmethod
     def find_bet(cls, user_id, match_id, bet_type):
         return cls.query.filter_by(user_id=user_id, match_id=match_id, bet_type=bet_type).first()
@@ -37,3 +42,8 @@ class Bet(db.Model):
     @classmethod
     def find_bets_of_user(cls, user_id):
         return cls.query.filter_by(user_id=user_id).order_by(desc('bet_time')).all()
+
+    @classmethod
+    def find_bets_of_match(cls, match_id):
+        return cls.query.filter_by(match_id=match_id).order_by(asc('bet_time')).all()
+

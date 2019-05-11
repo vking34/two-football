@@ -10,6 +10,7 @@ from app.v1.component.user.model.user import User
 from ..model.bet import Bet
 from ..schema.bet_request_schema import BetRequestSchema
 from ..schema.bet_schema import BetSchema
+from ..schema.user_bet_schema import UserBetSchema
 import datetime
 
 bet_blueprint = Blueprint('bet_blueprint', __name__)
@@ -65,6 +66,23 @@ def bet_match(match_id, token_id):
     }), OK
 
 
+@bet_blueprint.route('/matches/<int:match_id>/bets', methods=['GET'])
+@pre_authorize(ROLE_USER)
+def get_user_bets_for_match(match_id, token_id):
+    match = Match.find_match_by_id(match_id)
+
+    if match is None:
+        return jsonify(MATCH_NOT_FOUND), BAD_REQUEST
+
+    schema = UserBetSchema(many=True)
+    bets = schema.dump(Bet.find_user_bets_for_match(match_id, token_id)).data
+
+    return jsonify({
+        'status': True,
+        'bets': bets
+    }), OK
+
+
 @bet_blueprint.route('/users/<int:user_id>/bets', methods=['GET'])
 @pre_authorize(ROLE_USER)
 def get_bets(user_id, token_id):
@@ -77,5 +95,5 @@ def get_bets(user_id, token_id):
     return jsonify({
         'status': True,
         'bets': bets
-    })
+    }), OK
 

@@ -87,3 +87,9 @@ BET_ALREADY = {
     'message': 'Bet this type already',
     'code': 606
 }
+
+BAD_COMMENT = {
+    'status': False,
+    'message': 'Comment must contain 1-300 character',
+    'code': 607
+}

@@ -47,3 +47,6 @@ class Bet(db.Model):
     def find_bets_of_match(cls, match_id):
         return cls.query.filter_by(match_id=match_id).order_by(asc('bet_time')).all()
 
+    @classmethod
+    def find_user_bets_for_match(cls, match_id, user_id):
+        return cls.query.filter_by(match_id=match_id, user_id=user_id).all()

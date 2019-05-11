@@ -2,10 +2,10 @@ import requests
 from datetime import datetime, timedelta
 import json
 
-POOL_TIME = 15
+POOL_TIME = 30
 
 ACTION = 'get_events'
-API_KEY = 'ac2f0ea7166d4eb7ce9da12cfe706295023ba68ee9a060f3f4928709d4ef68e0'
+API_KEY = 'c28fc9ce3a86c54192c02d126d270802bb06d625cf0db3d459415ef7b025c280'
 
 
 def fetch3rdAPI(league_id):

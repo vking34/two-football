@@ -416,12 +416,11 @@
 	
 	+ Comment on a match (USER):
       + POST /api/v1/matches/<match_id>/comments
-      + Header: Authorization: Bearer TOKEN
+      + Header: Authorization: Bearer <user_token>
   		+ Request payload:
 			```
 			{
-				"comment": "string",
-				"react": "string"
+				"comment": "Goal!!!"
 			}
 			```
 		+ Responses:
@@ -448,35 +447,38 @@
 								"message": "Match not found",
 								"status": false
 						}
-    			```
+    				```
 	+ Get comments of a match:
     	+ GET /api/v1/matches/<match_id>/comments
+    	+ Params:
+        	+ number: int		(get number of comments)
     	+ Response:
       	+ OK:
         	+ Status code: 200
         	+ Payload:
-        	```
-							{
-								"data": [
-											{
-													"comment": "Goal!!!",
-													"time": "2019-05-09T17:12:33",
-													"user": {
-															"name": "Dũng",
-															"user_id": 10
-													}
-											},
-											{
-													"comment": "Messi hay nhưng không gánh đc team",
-													"time": "2019-05-09T17:11:18",
-													"user": {
-															"name": "Dũng",
-															"user_id": 10
-													}
-											},
-									]
-							}
-					```
+				```
+						{
+							"data": 
+							[
+								{
+									"comment": "Goal!!!",
+									"time": "2019-05-09T17:12:33",
+									"user": {
+										"name": "Dũng",
+										"user_id": 10
+									}
+								},
+								{
+									"comment": "Messi hay nhưng không gánh đc team",
+									"time": "2019-05-09T17:11:18",
+									"user": {
+										"name": "Dũng",
+										"user_id": 10
+									}
+								}
+							]
+						}
+				```
 
 	+ Bet on a match (USER):
         + POST /api/v1/matches/<match_id>/bets
@@ -484,9 +486,9 @@
 		+ Request payload:
 			```
 			{
-				"bet_type": int,
-				"bet_amount": int,
-				"bet_content": "string"
+				"bet_type": 1,
+				"bet_amount": 200,
+				"bet_content": "2-1"
 			}
 			```
 		+ Response:
@@ -495,19 +497,19 @@
 				+ Payload:
 				```
 				{
-					"status": true,
 					"bet": {
-						"user_id": int,
-						"match_id": int,
-						"bet_type": int,
-						"bet_amount": int,
-						"bet_content": "string",
-						"bet_time": "2019-03-19T19:30:15Z",
-						"bet_status": "PROCESSING"
-					}
+							"bet_amount": 200,
+							"bet_content": "2-1",
+							"bet_status": "PROCESSING",
+							"bet_time": "2019-05-11T16:50:40",
+							"bet_type": 1,
+							"match_id": 413094,
+							"user_id": 10
+					},
+					"status": true
 				}
 				```
-			+ Bad request (Balance not enough, can't bet in 30' before match,... ):
+			+ Bad request (Balance not enough,... ):
 				+ Status Code: 400
 				+ Payload:
 					```

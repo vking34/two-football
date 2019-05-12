@@ -46,6 +46,24 @@ USER_NOT_FOUND = {
     'code': 401
 }
 
+BAD_UPDATING_PROFILE_FORM = {
+    'status': False,
+    'message': 'Invalid Updating Profile Form',
+    'code': 402
+}
+
+EMAIL_TAKEN = {
+    'status': False,
+    'message': 'Email is used already',
+    'code': 403
+}
+
+PHONE_TAKEN = {
+    'status': False,
+    'message': 'Phone number is used already',
+    'code': 404
+}
+
 BAD_CARD_REQUEST = {
     'status': False,
     'message': 'Payload consists an invalid card code / password.',
@@ -93,3 +111,4 @@ BAD_COMMENT = {
     'message': 'Comment must contain 1-300 character',
     'code': 607
 }
+

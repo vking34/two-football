@@ -41,6 +41,14 @@ class User(db.Model):
         self.balance -= amount
         db.session.commit()
 
+    def update_profile(self, name, email, phone):
+        self.name = name
+        self.email = email
+        self.phone = phone
+        db.session.add(self)
+        db.session.commit()
+
+
     @classmethod
     def find_users(cls):
         return cls.query.all()
@@ -56,3 +64,7 @@ class User(db.Model):
     @classmethod
     def find_user_by_id(cls, user_id):
         return cls.query.filter_by(user_id=user_id).first()
+
+    @classmethod
+    def find_user_by_email_or_phone(cls, email, phone):
+        return cls.query.filter(or_(cls.phone == phone, cls.email == email)).first()

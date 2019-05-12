@@ -10,6 +10,6 @@ if __name__ == '__main__':
 
 
     # debug=False to run background process
-    # flask_app.run(port=80, debug=False)
+    flask_app.run(port=80, debug=False)
 
-    flask_app.run(port=80, debug=True)
+    # flask_app.run(port=80, debug=True)

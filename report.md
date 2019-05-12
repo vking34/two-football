@@ -23,6 +23,18 @@
   + Get all leagues: 
    	+ GET /api/v1/leagues
 
+  + Comment on a match (USER):
+  	+ POST /api/v1/matches/<match_id>/comments
+
+  + Get comments of a match:
+  	+ GET /api/v1/matches/<match_id>/comments
+
+  + Bet on a match (USER):
+   	+ POST /api/v1/matches/<match_id>/bets
+	
+  + Get user's bets on a match (USER):
+  	+ GET /api/v1/matches/<match_id>/bets
+  	
   + Add a league (ADMIN): x
    	+ POST /api/v1/leagues
 
@@ -40,18 +52,6 @@
 
   + Get fixtures of a match: x
    	+ GET /api/v1/matches/<match_id>
-
-  + Comment on a match (USER):
-  	+ POST /api/v1/matches/<match_id>/comments
-
-	+ + Get comments of a match:
-  	+ GET /api/v1/matches/<match_id>/comments
-
-  + Bet on a match (USER):
-   	+ POST /api/v1/matches/<match_id>/bets
-	
-	+ Get user's bets on a match (USER):
-  	+ GET /api/v1/matches/<match_id>/bets
   
 
 + Details: 
@@ -61,13 +61,13 @@
     	+ POST /signup
     	+ Request Payload:
     		```
-    		{
-    		"username": "string",
-    		"password": "string",
-    		"name": "string",
-    		"phone": "string",
-    		"email": "string"
-    		}
+				{
+					"username": "client1234",
+					"password": "client",
+					"name": "Tư",
+					"email": "vking3413@gmail.com",
+					"phone": "0326324233"
+				}
     		```
 
     	+ Responses:
@@ -75,79 +75,81 @@
     			+ Status Code: 200 
     			+ Payload:
     				```
-    				{
-    				"status" : true,
-    				"user": {
-    					"user_id": int,
-    					"username": "string",
-    					"name": "string",
-    					"phone": "string",
-    					"email": "string",
-    					"balance": int,
-    					"role": "string"
-    					}
-    				}
+						{
+							"status": true,
+							"user": {
+									"balance": 0,
+									"email": "vking3413@gmail.com",
+									"name": "Tư",
+									"phone": "0326324233",
+									"picture": "",
+									"role": "ROLE_USER",
+									"user_id": 11,
+									"username": "client1234"
+							}
+						}
     				```
     		+ Bad request (Username is used already,...):
     			- Status Code: 400
     			- Payload:
     				```
-    				{
-    				"status": false,
-    				"message": "string",
-    				"code": int
-    				}
+						{
+							"code": 101,
+							"message": "Username/Phone number/Email is used already",
+							"status": false
+						}
     				```
 
     + Login:
     	- POST /login
     	- Request payload:
     		```
-    		{
-			"username": "string",
-			"password": "string"
-    		}
+				{
+					"username": "client123",
+					"password": "vking34"
+				}
     		```
     	
     	- Responses:
     		+ OK:
     			- Status Code: 200
     			- Payload:
-    				```
-    				{
-    				"status": true,
-    				"access_token": "string",
-    				"user": {
-    					"user_id": int,
-    					"username": "string",
-    					"name": "string",
-    					"phone": "string",
-    					"email": "string",
-    					"balance": int,
-    					"role": "string"
-    					}
-    				}
-    				```
+					```
+					{
+						"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NTc2NjQ2OTMsImlhdCI6MTU1NzY1MDI5Mywic3ViIjoxMCwicm9sZSI6IlJPTEVfVVNFUiIsInVzZXJuYW1lIjoiY2xpZW50MTIzIn0.EfIFiaYknUou_4jr5f5D_TKeDwjxQdJWEKpGuqtngQ0",
+						"status": true,
+						"user": {
+							"balance": 10400,
+							"email": "vking3414@gmail.com",
+							"name": "Dũng",
+							"phone": "0362225678",
+							"picture": "",
+							"role": "ROLE_USER",
+							"user_id": 10,
+							"username": "client123"
+						}
+					}
+					```
 
     		+ Bad request (Username/password is wrong,...):
     			- Status Code: 400
     			- Payload:
     				```
-    				{
-    				"status": false,
-    				"message": "string",
-    				"code": int
-    				}
+						{
+							"code": 201,
+							"message": "Username/password is wrong",
+							"status": false
+						}
     				```
 	+ Update profile:
     	+ PUT /api/v1/users/<user_id>
-    	+ Header: Authorization: Bearer TOKEN
+    	+ Header: Authorization: Bearer <user_token>
     	+ Request Payload:
 			```
 			{
-				"name": "string",
-				"phone": "string",
-				"email": "string"
+				"name": "Tân",
+				"email": "vking3401@gmail.com",
+				"phone": "0362225678"
 			}
 			```
 		+ Responses:
@@ -155,32 +157,32 @@
         		+ Status Code: 200
         		+ Payload:
     				```
-    				{
-    				"status": true,
-    				"user": {
-    					"user_id": int,
-    					"username": "string",
-    					"name": "string",
-    					"phone": "string",
-    					"email": "string",
-    					"balance": int,
-    					"role": "string"
-    					}
-    				}
+						{
+							"status": true,
+							"user": {
+								"balance": 10400,
+								"email": "vking3401@gmail.com",
+								"name": "Tân",
+								"phone": "0362225678",
+								"role": "ROLE_USER",
+								"user_id": 10,
+								"username": "client123"
+							}
+						}
     				```
 			+ Bad request (email is used already,...)
     			+ Status Code: 400
     			+ Payload:
     				```
-    				{
-    				"status": false,
-    				"message": "string",
-    				"code": int
-    				}
+						{
+							"code": 403,
+							"message": "Email is used already",
+							"status": false
+						}
     				```
 	+ Deposit money into balance:
     	+ POST /api/v1/users/<user_id>/balance
-    	+ Header: Authorization: Bearer TOKEN
+    	+ Header: Authorization: Bearer <user_token>
     	+ Request Payload:
 			```
 			{
@@ -212,8 +214,141 @@
     				"message": "string",
     				"code": int
     				}
-    				```				
+    				```
+	
+	+ Comment on a match (USER):
+      + POST /api/v1/matches/<match_id>/comments
+      + Header: Authorization: Bearer <user_token>
+  		+ Request payload:
+			```
+			{
+				"comment": "Goal!!!"
+			}
+			```
+		+ Responses:
+			+ OK:
+				+ Status Code: 200
+				+ Payload:
+					```
+					{
+						"data": {
+								"comment": "Goal!!!",
+								"match_id": 410600,
+								"time": "2019-05-11T16:22:18",
+								"user_id": 10
+						},
+						"status": true
+					}
+					```
+			+ Bad request:
+				+ Status Code: 400
+				+ Payload:
+					```
+						{
+								"code": 602,
+								"message": "Match not found",
+								"status": false
+						}
+    				```
+	+ Get comments of a match:
+    	+ GET /api/v1/matches/<match_id>/comments
+    	+ Params:
+        	+ number: int		(get number of comments)
+    	+ Response:
+      	+ OK:
+        	+ Status code: 200
+        	+ Payload:
+				```
+						{
+							"data": 
+							[
+								{
+									"comment": "Goal!!!",
+									"time": "2019-05-09T17:12:33",
+									"user": {
+										"name": "Dũng",
+										"user_id": 10
+									}
+								},
+								{
+									"comment": "Messi hay nhưng không gánh đc team",
+									"time": "2019-05-09T17:11:18",
+									"user": {
+										"name": "Dũng",
+										"user_id": 10
+									}
+								}
+							]
+						}
+				```
+  + Get user's bets on a match (USER):
+  	+ GET /api/v1/matches/<match_id>/bets
+    + Header: Authorization: Bearer <user_token>
 
+	+ Bet on a match (USER):
+        + POST /api/v1/matches/<match_id>/bets
+		+ Header: Authorization: Bearer <user_token>
+		+ Request payload:
+			```
+			{
+				"bet_type": 1,
+				"bet_amount": 200,
+				"bet_content": "2-1"
+			}
+			```
+		+ Response:
+			+ OK:
+				+ Status Code:
+				+ Payload:
+				```
+				{
+					"bet": {
+							"bet_amount": 200,
+							"bet_content": "2-1",
+							"bet_status": "PROCESSING",
+							"bet_time": "2019-05-11T16:50:40",
+							"bet_type": 1,
+							"match_id": 413094,
+							"user_id": 10
+					},
+					"status": true
+				}
+				```
+			+ Bad request (Balance not enough,... ):
+				+ Status Code: 400
+				+ Payload:
+					```
+    				{
+    				"status": false,
+    				"message": "string",
+    				"code": int
+    				}
+    				```
+			+ Pusher Response:
+				```
+				{
+					"match": {
+						"match_id":410609,
+						"league_id":128,
+						"match_awayteam_name":"Le Havre",
+						"match_hometeam_name":"Valenciennes",
+						"match_hometeam_halftime_score":0,
+						"match_awayteam_halftime_score":0,
+						"match_hometeam_score":1,
+						"match_awayteam_score":0,
+						"yellow_card":0,
+						"match_status":"FT",
+						"match_date":"2019-05-10",
+						"match_time":"18:45"
+					},
+					"bet_type":2,
+					"bet_amount":200,
+					"bet_content":"1-0",
+					"bet_time":"2019-05-12T11:38:55",
+					"bet_status":"WIN",
+					"bet_gain":600
+				}
+				```
     + Get leagues:
     	- GET /api/v1/leagues
     	- Responses:
@@ -413,140 +548,7 @@
 					"yellow_card": int
 				}
 				```
-	
-	+ Comment on a match (USER):
-      + POST /api/v1/matches/<match_id>/comments
-      + Header: Authorization: Bearer <user_token>
-  		+ Request payload:
-			```
-			{
-				"comment": "Goal!!!"
-			}
-			```
-		+ Responses:
-			+ OK:
-				+ Status Code: 200
-				+ Payload:
-					```
-					{
-						"data": {
-								"comment": "Goal!!!",
-								"match_id": 410600,
-								"time": "2019-05-11T16:22:18",
-								"user_id": 10
-						},
-						"status": true
-					}
-					```
-			+ Bad request:
-				+ Status Code: 400
-				+ Payload:
-					```
-						{
-								"code": 602,
-								"message": "Match not found",
-								"status": false
-						}
-    				```
-	+ Get comments of a match:
-    	+ GET /api/v1/matches/<match_id>/comments
-    	+ Params:
-        	+ number: int		(get number of comments)
-    	+ Response:
-      	+ OK:
-        	+ Status code: 200
-        	+ Payload:
-				```
-						{
-							"data": 
-							[
-								{
-									"comment": "Goal!!!",
-									"time": "2019-05-09T17:12:33",
-									"user": {
-										"name": "Dũng",
-										"user_id": 10
-									}
-								},
-								{
-									"comment": "Messi hay nhưng không gánh đc team",
-									"time": "2019-05-09T17:11:18",
-									"user": {
-										"name": "Dũng",
-										"user_id": 10
-									}
-								}
-							]
-						}
-				```
-  + Get user's bets on a match (USER):
-  	+ GET /api/v1/matches/<match_id>/bets
-    + Header: Authorization: Bearer <user_token>
 
-	+ Bet on a match (USER):
-        + POST /api/v1/matches/<match_id>/bets
-		+ Header: Authorization: Bearer <user_token>
-		+ Request payload:
-			```
-			{
-				"bet_type": 1,
-				"bet_amount": 200,
-				"bet_content": "2-1"
-			}
-			```
-		+ Response:
-			+ OK:
-				+ Status Code:
-				+ Payload:
-				```
-				{
-					"bet": {
-							"bet_amount": 200,
-							"bet_content": "2-1",
-							"bet_status": "PROCESSING",
-							"bet_time": "2019-05-11T16:50:40",
-							"bet_type": 1,
-							"match_id": 413094,
-							"user_id": 10
-					},
-					"status": true
-				}
-				```
-			+ Bad request (Balance not enough,... ):
-				+ Status Code: 400
-				+ Payload:
-					```
-    				{
-    				"status": false,
-    				"message": "string",
-    				"code": int
-    				}
-    				```
-			+ Pusher Response:
-				```
-				{
-					"match": {
-						"match_id":410609,
-						"league_id":128,
-						"match_awayteam_name":"Le Havre",
-						"match_hometeam_name":"Valenciennes",
-						"match_hometeam_halftime_score":0,
-						"match_awayteam_halftime_score":0,
-						"match_hometeam_score":1,
-						"match_awayteam_score":0,
-						"yellow_card":0,
-						"match_status":"FT",
-						"match_date":"2019-05-10",
-						"match_time":"18:45"
-					},
-					"bet_type":2,
-					"bet_amount":200,
-					"bet_content":"1-0",
-					"bet_time":"2019-05-12T11:38:55",
-					"bet_status":"WIN",
-					"bet_gain":600
-				}
-				```
 	+ Millionaires ranking 
     	+ GET /api/v1/users/millionaies
 		+ Responses:

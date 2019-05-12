@@ -2,7 +2,7 @@ import requests
 from datetime import datetime, timedelta
 import json
 
-POOL_TIME = 30
+POOL_TIME = 20
 
 ACTION = 'get_events'
 API_KEY = 'c28fc9ce3a86c54192c02d126d270802bb06d625cf0db3d459415ef7b025c280'

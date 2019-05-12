@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <head>
-  <title>Login</title>
+  <title>Match</title>
   <script src="https://js.pusher.com/4.4/pusher.min.js"></script>
   <script>
 
@@ -12,8 +12,8 @@
       forceTLS: true
     });
 
-    var channel = pusher.subscribe('BET_RESULT_CHANNEL');
-    channel.bind('bet_410609_10', function(data) {
+    var channel = pusher.subscribe('COMMENT_CHANNEL');
+    channel.bind('comment_413094', function(data) {
       alert(JSON.stringify(data));
       console.log(data);
     });

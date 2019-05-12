@@ -8,7 +8,7 @@ import atexit
 import pusher
 # from apscheduler.schedulers.background import BackgroundScheduler
 from app.v1.config.thread_config import POOL_TIME, fetch3rdAPI
-from app.v1.generic.constant.pusher_constant import *
+from app.v1.generic.constant.pusher_constant import BET_CHANNEL, BET_EVENT_PREFIX
 
 
 db = SQLAlchemy()
@@ -202,17 +202,20 @@ def create_app():
                                     bet.end(0)
 
                             # pusher
-                            event = str(match_id) + '_' + str(bet.user_id)
+                            event = BET_EVENT_PREFIX + str(match_id) + '_' + str(bet.user_id)
                             print(event)
-                            pusher_client.trigger(BET_CHANNEL, event, {
-                                'match_id': bet.match_id,
+                            from app.v1.component.fixture.schema.match_schema import MatchSchema
+                            schema = MatchSchema()
+                            data = {
+                                'match': schema.dump(match_record).data,
                                 'bet_type': bet.bet_type,
                                 'bet_amount': bet.bet_amount,
                                 'bet_content': bet.bet_content,
                                 'bet_time': bet.bet_time.strftime('20%y-%m-%dT%H:%M:%S'),
                                 'bet_status': bet.bet_status,
                                 'bet_gain': bet.bet_gain
-                            })
+                            }
+                            pusher_client.trigger(BET_CHANNEL, event, data)
 
     def interrupt_thread():
         global fetchingThread

@@ -31,8 +31,12 @@ class Bet(db.Model):
         db.session.commit()
 
     def end(self, bet_gain):
-        self.bet_gain = bet_gain
-        self.bet_status = 'COMPLETE'
+        if bet_gain == 0:
+            self.bet_status = 'LOSE'
+        else:
+            self.bet_gain = bet_gain
+            self.bet_status = 'WIN'
+
         db.session.commit()
 
     @classmethod

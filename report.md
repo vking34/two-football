@@ -23,22 +23,22 @@
   + Get all leagues: 
    	+ GET /api/v1/leagues
 
-  + Add a league (ADMIN):
+  + Add a league (ADMIN): x
    	+ POST /api/v1/leagues
 
-  + Get details of a league:
+  + Get details of a league: x
    	+ GET /api/v1/leagues/<league_id>
 
-  + Update a league (ADMIN):
+  + Update a league (ADMIN): x
    	+ PUT /api/v1/leagues/<league_id>
 
-  + Delete a league (ADMIN):
+  + Delete a league (ADMIN): x
    	+ DELETE /api/v1/leagues/<league_id>
 
-  + Get fixtures of matches filtered by start-date and stop-date | league_id:
+  + Get fixtures of matches filtered by start-date and stop-date | league_id: x
    	+ GET /api/v1/matches?from=2019-03-15&to=2019-03-21&league_id=<league_id>
 
-  + Get fixtures of a match:
+  + Get fixtures of a match: x
    	+ GET /api/v1/matches/<match_id>
 
   + Comment on a match (USER):
@@ -49,9 +49,9 @@
 
   + Bet on a match (USER):
    	+ POST /api/v1/matches/<match_id>/bets
-		 
-  + Millionaires ranking
-    + GET /api/v1/users/millionaies
+	
+	+ Get user's bets on a match (USER):
+  	+ GET /api/v1/matches/<match_id>/bets
   
 
 + Details: 
@@ -479,10 +479,13 @@
 							]
 						}
 				```
+  + Get user's bets on a match (USER):
+  	+ GET /api/v1/matches/<match_id>/bets
+    + Header: Authorization: Bearer <user_token>
 
 	+ Bet on a match (USER):
         + POST /api/v1/matches/<match_id>/bets
-		+ Header: Authorization: Bearer TOKEN
+		+ Header: Authorization: Bearer <user_token>
 		+ Request payload:
 			```
 			{
@@ -519,8 +522,32 @@
     				"code": int
     				}
     				```
-
-	+ Millionaires ranking
+			+ Pusher Response:
+				```
+				{
+					"match": {
+						"match_id":410609,
+						"league_id":128,
+						"match_awayteam_name":"Le Havre",
+						"match_hometeam_name":"Valenciennes",
+						"match_hometeam_halftime_score":0,
+						"match_awayteam_halftime_score":0,
+						"match_hometeam_score":1,
+						"match_awayteam_score":0,
+						"yellow_card":0,
+						"match_status":"FT",
+						"match_date":"2019-05-10",
+						"match_time":"18:45"
+					},
+					"bet_type":2,
+					"bet_amount":200,
+					"bet_content":"1-0",
+					"bet_time":"2019-05-12T11:38:55",
+					"bet_status":"WIN",
+					"bet_gain":600
+				}
+				```
+	+ Millionaires ranking 
     	+ GET /api/v1/users/millionaies
 		+ Responses:
 			+ OK:

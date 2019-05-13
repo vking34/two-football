@@ -20,9 +20,6 @@
   + Deposit money into the balance of an account (USER):
     + POST /api/users/<user_id>/balance
 
-  + Get all leagues: 
-   	+ GET /api/v1/leagues
-
   + Comment on a match (USER):
   	+ POST /api/v1/matches/<match_id>/comments
 
@@ -34,6 +31,12 @@
 	
   + Get user's bets on a match (USER):
   	+ GET /api/v1/matches/<match_id>/bets
+	
+	+ Get user's bet history (USER):
+  	+ GET /api/v1/users/<user_id>/bets 
+
+  + Get all leagues: x
+   	+ GET /api/v1/leagues
   	
   + Add a league (ADMIN): x
    	+ POST /api/v1/leagues
@@ -284,173 +287,257 @@
   + Get user's bets on a match (USER):
   	+ GET /api/v1/matches/<match_id>/bets
     + Header: Authorization: Bearer <user_token>
+    + Response:
+      + OK:
+        + Status code: 200
+        + Payload:
 
-	+ Bet on a match (USER):
-        + POST /api/v1/matches/<match_id>/bets
-		+ Header: Authorization: Bearer <user_token>
-		+ Request payload:
+					```
+					{
+						"bets": [
+							{
+								"bet_amount": 200,
+								"bet_content": "2-1",
+								"bet_gain": 0,
+								"bet_status": "PROCESSING",
+								"bet_time": "2019-05-11T16:50:40",
+								"bet_type": 1,
+								"user_id": 10
+							}
+						],
+						"status": true
+					}
+					```
+        + Bad Request:
+          + Status: 400
+          + Payload: 
 			```
-			{
-				"bet_type": 1,
-				"bet_amount": 200,
-				"bet_content": "2-1"
-			}
+				{
+					"code": 602,
+					"message": "Match not found",
+					"status": false
+				}
 			```
-		+ Response:
-			+ OK:
-				+ Status Code:
-				+ Payload:
+					
+
+  + Bet on a match (USER):
+    + POST /api/v1/matches/<match_id>/bets
+    + Header: Authorization: Bearer <user_token>
+    + Request payload:
+    	```
+    	{
+    		"bet_type": 1,
+    		"bet_amount": 200,
+    		"bet_content": "2-1"
+    	}
+    	```
+    + Response:
+    	+ OK:
+    		+ Status Code: 200
+    		+ Payload:
+    		```
+    		{
+    			"bet": {
+    					"bet_amount": 200,
+    					"bet_content": "2-1",
+    					"bet_status": "PROCESSING",
+    					"bet_time": "2019-05-11T16:50:40",
+    					"bet_type": 1,
+    					"match_id": 413094,
+    					"user_id": 10
+    			},
+    			"status": true
+    		}
+    		```
+    	+ Bad request (Balance not enough,... ):
+    		+ Status Code: 400
+    		+ Payload:
+    			```
+      				{
+      				"status": false,
+      				"message": "string",
+      				"code": int
+      				}
+      				```
+    	+ Pusher Response:
+    		```
+    		{
+    			"match": {
+    				"match_id":410609,
+    				"league_id":128,
+    				"match_awayteam_name":"Le Havre",
+    				"match_hometeam_name":"Valenciennes",
+    				"match_hometeam_halftime_score":0,
+    				"match_awayteam_halftime_score":0,
+    				"match_hometeam_score":1,
+    				"match_awayteam_score":0,
+    				"yellow_card":0,
+    				"match_status":"FT",
+    				"match_date":"2019-05-10",
+    				"match_time":"18:45"
+    			},
+    			"bet_type":2,
+    			"bet_amount":200,
+    			"bet_content":"1-0",
+    			"bet_time":"2019-05-12T11:38:55",
+    			"bet_status":"WIN",
+    			"bet_gain":600
+    		}
+    		```
+
+	+ Get user's bet history (USER):
+  	+ GET /api/v1/users/<user_id>/bets
+  	+ Header: Authorization: Bearer <user_token>
+  	+ Response:
+    	+ OK:
+      	+ Code Status: 200
+      	+ Payload: 
+
 				```
 				{
-					"bet": {
+					"bets": [
+						{
 							"bet_amount": 200,
-							"bet_content": "2-1",
-							"bet_status": "PROCESSING",
-							"bet_time": "2019-05-11T16:50:40",
-							"bet_type": 1,
-							"match_id": 413094,
+							"bet_content": "1-0",
+							"bet_gain": 600,
+							"bet_status": "WIN",
+							"bet_time": "2019-05-12T11:38:55",
+							"bet_type": 2,
+							"match": {
+									"league_id": 128,
+									"match_awayteam_halftime_score": 0,
+									"match_awayteam_name": "Le Havre",
+									"match_awayteam_score": 0,
+									"match_date": "2019-05-10",
+									"match_hometeam_halftime_score": 0,
+									"match_hometeam_name": "Valenciennes",
+									"match_hometeam_score": 1,
+									"match_id": 410609,
+									"match_status": "FT",
+									"match_time": "18:45",
+									"yellow_card": 0
+							},
 							"user_id": 10
-					},
+						}
+					],
 					"status": true
 				}
 				```
-			+ Bad request (Balance not enough,... ):
-				+ Status Code: 400
-				+ Payload:
-					```
-    				{
-    				"status": false,
-    				"message": "string",
-    				"code": int
-    				}
-    				```
-			+ Pusher Response:
+    	+ Forbidden:
+  			+ Code status: 403
+  			+ Payload:
 				```
 				{
-					"match": {
-						"match_id":410609,
-						"league_id":128,
-						"match_awayteam_name":"Le Havre",
-						"match_hometeam_name":"Valenciennes",
-						"match_hometeam_halftime_score":0,
-						"match_awayteam_halftime_score":0,
-						"match_hometeam_score":1,
-						"match_awayteam_score":0,
-						"yellow_card":0,
-						"match_status":"FT",
-						"match_date":"2019-05-10",
-						"match_time":"18:45"
-					},
-					"bet_type":2,
-					"bet_amount":200,
-					"bet_content":"1-0",
-					"bet_time":"2019-05-12T11:38:55",
-					"bet_status":"WIN",
-					"bet_gain":600
+					"code": 305,
+					"message": "Invalid Access Token",
+					"status": false
 				}
 				```
-    + Get leagues:
-    	- GET /api/v1/leagues
-    	- Responses:
-    		+ OK:
-        		- Status Code: 200
-        		- Payload:
-        			```
-        			[
-        				{
-        				"league_id": int,
-        				"league_name": "string",
-        				"country": "string"
-        				}
-        			]
-        			```
-    
-    + Add a league (ADMIN):
-		+ POST /api/v1/leagues
-		+ Header: Authorization: Bearer TOKEN
-		+ Request Payload: 
-			```
-			{
-				"league_id": int,
-				"league_name": "string",
-				"country": "string"
-			}
-			```
-		+ Responses:
-			+ OK:
-				+ Status: 200
-				+ Payload: 
-					```
-					{
-						"status": true,
-						"league":
-								{
-								"league_id": int,
-								"league_name": "string",
-								"country": "string"
-								}
-					}
-					```
-			
-			+ Bad request (League exists, ...):
-				+ Status Code: 400
-				+ Payload:
-					```
-					{
-					"status": false,
-					"message": "string",
-					"code": int
-					}
-					```
-			+ Forbidden (User create league,...):
-				+ Status Code: 403
-				+ Payload:
-					```
-					{
-					"status": false,
-					"message": "string",
-					"code": int
-					}
-					```
 
-	+ Get a league:
-		+ GET /api/v1/leagues/<league_id>
-		+ Response:
-			+ OK: 
-				+ Status Code: 200
-				+ Payload:
-					```
-					{
-        				"league_id": int,
-        				"league_name": "string",
-        				"country": "string"
-        			}
-					```
+  + Get leagues:
+  	- GET /api/v1/leagues
+  	- Responses:
+  		+ OK:
+      		- Status Code: 200
+      		- Payload:
+      			```
+      			[
+      				{
+      				"league_id": int,
+      				"league_name": "string",
+      				"country": "string"
+      				}
+      			]
+      			```
+
+  + Add a league (ADMIN):
+    + POST /api/v1/leagues
+    + Header: Authorization: Bearer TOKEN
+    + Request Payload:
+
+				```
+				{
+					"league_id": int,
+					"league_name": "string",
+					"country": "string"
+				}
+				```
+
+    + Responses:
+    	+ OK:
+    		+ Status: 200
+    		+ Payload: 
+    			```
+    			{
+    				"status": true,
+    				"league":
+    						{
+    						"league_id": int,
+    						"league_name": "string",
+    						"country": "string"
+    						}
+    			}
+    			```
+  			
+    	+ Bad request (League exists, ...):
+    		+ Status Code: 400
+    		+ Payload:
+    			```
+    			{
+    			"status": false,
+    			"message": "string",
+    			"code": int
+    			}
+    			```
+    	+ Forbidden (User create league,...):
+    		+ Status Code: 403
+    		+ Payload:
+    			```
+    			{
+    			"status": false,
+    			"message": "string",
+    			"code": int
+    			}
+    			```
+
+  + Get a league:
+    + GET /api/v1/leagues/<league_id>
+    + Response:
+    	+ OK: 
+    		+ Status Code: 200
+    		+ Payload:
+    			```
+    			{
+          				"league_id": int,
+          				"league_name": "string",
+          				"country": "string"
+          			}
+    			```
 	
-	+ Update a league (ADMIN):
-		+ PUT /api/v1/leagues/<league_id>
-		+ Header: Authorization: Bearer TOKEN
-		+ Request Payload: 
-			```
-			{
-				"league_name": "string",
-				"country": "string"
-			}
-			```
-		+ Responses:
-			+ OK:
-				+ Status Code: 200
-				+ Payload:
-					```
-					{
-						"status": true,
-						"league": {
-							"league_id": int,
-							"league_name": "string",
-							"country": "string"
-						}
-					}
-					```
+  + Update a league (ADMIN):
+    + PUT /api/v1/leagues/<league_id>
+    + Header: Authorization: Bearer TOKEN
+    + Request Payload: 
+    	```
+    	{
+    		"league_name": "string",
+    		"country": "string"
+    	}
+    	```
+    + Responses:
+    	+ OK:
+    		+ Status Code: 200
+    		+ Payload:
+    			```
+    			{
+    				"status": true,
+    				"league": {
+    					"league_id": int,
+    					"league_name": "string",
+    					"country": "string"
+    				}
+    			}
+    			```
 
 			+ Bad request (name league is used already)
             	+ Status Code: 400
@@ -463,77 +550,57 @@
 					}
 					```
 
-	+ Delete a league (ADMIN):
-		+ DELETE /api/v1/leagues/<league_id>
-		+ Header: Authorization: Bearer TOKEN
-		+ Responses:
-    		+ OK:
-            	+ Status: 200
-            	+ Payload: 
-            		```
-    				{
-    					"status": true,
-    					"league":
-    							{
-    							"league_id": int,
-    							"league_name": "string",
-    							"country": "string"
-    							}
-    				}
-  					```
+  + Delete a league (ADMIN):
+    + DELETE /api/v1/leagues/<league_id>
+    + Header: Authorization: Bearer TOKEN
+    + Responses:
+  		+ OK:
+        	+ Status: 200
+        	+ Payload: 
 
-			+ Bad request (League doesn't exist, ...):
-    			+ Status Code: 400
-    			+ Payload:
-					```
+				```
 					{
-					"status": false,
-					"message": "string",
-					"code": int
+						"status": true,
+						"league":
+							{
+							"league_id": int,
+							"league_name": "string",
+							"country": "string"
+							}
 					}
-					```
-    		+ Forbidden (User delete league,...):
-    			+ Status Code: 403
-      			+ Payload:
-    				```
-    				{
-    				"status": false,
-    				"message": "string",
-    				"code": int
-    				}
-    				```
+				```
 
-	+ Get fixtures of matches filtered by start-date and stop-date | league_id:
-        + GET /api/v1/matches?from=2019-03-15&to=2019-03-21&league_id=<league_id>
-        + Response:
-          + OK:
-            + Status Code: 200
-            + Payload:
+    	+ Bad request (League doesn't exist, ...):
+    		+ Status Code: 400
+    		+ Payload:
+
 				```
-				[
-					{
-						"match_id": int,
-						"league_id": int,
-						"match_date": "2019-03-20",
-						"match_time": "15:00",
-						"match_hometeam_name": "string",
-						"match_awayteam_name": "string",
-						"match_hometeam_halftime_score": int,
-						"match_awayteam_halftime_score": int,
-						"match_hometeam_score": int,
-						"match_awayteam_score": int,
-						"yellow_card": int
-					}
-				]
+				{
+				"status": false,
+				"message": "string",
+				"code": int
+				}
 				```
-	
-	+ Get fixtures of a match:
-        + GET /api/v1/matches/<match_id>
-        + Response:
-          + OK:
-            + Status Code: 200
-            + Payload:
-				```
+
+      + Forbidden (User delete league,...):
+      	+ Status Code: 403
+      	+ Payload:
+      		```
+      		{
+      		"status": false,
+      		"message": "string",
+      		"code": int
+      		}
+      		```
+
+  + Get fixtures of matches filtered by start-date and stop-date | league_id:
+    + GET /api/v1/matches?from=2019-03-15&to=2019-03-21&league_id=<league_id>
+    + Response:
+      + OK:
+        + Status Code: 200
+        + Payload:
+			```
+			[
 				{
 					"match_id": int,
 					"league_id": int,
@@ -547,10 +614,33 @@
 					"match_awayteam_score": int,
 					"yellow_card": int
 				}
-				```
+			]
+			```
+	
+  + Get fixtures of a match:
+    + GET /api/v1/matches/<match_id>
+    + Response:
+      + OK:
+        + Status Code: 200
+        + Payload:
+			```
+			{
+				"match_id": int,
+				"league_id": int,
+				"match_date": "2019-03-20",
+				"match_time": "15:00",
+				"match_hometeam_name": "string",
+				"match_awayteam_name": "string",
+				"match_hometeam_halftime_score": int,
+				"match_awayteam_halftime_score": int,
+				"match_hometeam_score": int,
+				"match_awayteam_score": int,
+				"yellow_card": int
+			}
+			```
 
-	+ Millionaires ranking 
-    	+ GET /api/v1/users/millionaies
+  + Millionaires ranking 
+  	+ GET /api/v1/users/millionaies
 		+ Responses:
 			+ OK:
 				+ Status Code: 200

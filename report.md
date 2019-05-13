@@ -385,7 +385,7 @@
     		}
     		```
 
-	+ Get user's bet history (USER):
+  + Get user's bet history (USER):
   	+ GET /api/v1/users/<user_id>/bets
   	+ Header: Authorization: Bearer <user_token>
   	+ Response:

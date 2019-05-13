@@ -1,4 +1,4 @@
-from flask import jsonify, Blueprint, request
+from flask import jsonify, Blueprint, request, render_template
 from ..schema.authen_form import AuthenticationForm
 from ..schema.user_schema import UserSchema
 from ..model.user import User
@@ -12,6 +12,7 @@ login_blueprint = Blueprint('login_blueprint', __name__)
 
 @login_blueprint.route('/login', methods=['POST'])
 def login():
+
     global result
     request_login = request.json
     schema = AuthenticationForm()
@@ -38,4 +39,9 @@ def login():
         'access_token': token_object.decode(),
         'user': schema.dump(user).data
     })
+
+
+@login_blueprint.route('/login', methods=['GET'])
+def get_login_page():
+    return render_template('login.html')
 

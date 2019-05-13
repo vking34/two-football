@@ -12,6 +12,8 @@ class Card(db.Model):
         self.active = False
         db.session.commit()
 
+
+
     @classmethod
     def find_card_by_code(cls, code):
         return cls.query.filter_by(code=code).first()

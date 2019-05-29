@@ -41,7 +41,7 @@ def login():
     })
 
 
-@login_blueprint.route('/login', methods=['GET'])
-def get_login_page():
-    return render_template('login.html')
+# @login_blueprint.route('/login', methods=['GET'])
+# def get_login_page():
+#     return render_template('login.html')
 

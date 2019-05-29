@@ -8,54 +8,55 @@
 
 + Brief API docs:
 
-  + Sign up: 
-    + POST /signup
-
-  + Login: 
-    + POST /login
-
-  + Update profile (USER):
-    + PUT /api/users/<user_id>
-
-  + Deposit money into the balance of an account (USER):
-    + POST /api/users/<user_id>/balance
-
-  + Comment on a match (USER):
-  	+ POST /api/v1/matches/<match_id>/comments
-
-  + Get comments of a match:
-  	+ GET /api/v1/matches/<match_id>/comments
-
-  + Bet on a match (USER):
-   	+ POST /api/v1/matches/<match_id>/bets
-	
-  + Get user's bets on a match (USER):
-  	+ GET /api/v1/matches/<match_id>/bets
-	
-	+ Get user's bet history (USER):
-  	+ GET /api/v1/users/<user_id>/bets 
-
-  + Get all leagues: x
-   	+ GET /api/v1/leagues
-  	
-  + Add a league (ADMIN): x
-   	+ POST /api/v1/leagues
-
-  + Get details of a league: x
-   	+ GET /api/v1/leagues/<league_id>
-
-  + Update a league (ADMIN): x
-   	+ PUT /api/v1/leagues/<league_id>
-
-  + Delete a league (ADMIN): x
-   	+ DELETE /api/v1/leagues/<league_id>
-
-  + Get fixtures of matches filtered by start-date and stop-date | league_id: x
-   	+ GET /api/v1/matches?from=2019-03-15&to=2019-03-21&league_id=<league_id>
-
-  + Get fixtures of a match: x
-   	+ GET /api/v1/matches/<match_id>
-  
+    + Sign up: 
+        + POST /signup
+    
+    + Login: 
+        + POST /login
+    
+    + Update profile (USER):
+        + PUT /api/users/<user_id>
+    
+    + Deposit money into the balance of an account (USER):
+        + POST /api/users/<user_id>/balance
+    
+    + Comment on a match (USER):
+        + POST /api/v1/matches/<match_id>/comments
+    
+    + Get comments of a match:
+        + GET /api/v1/matches/<match_id>/comments
+    
+    + Bet on a match (USER):
+        + POST /api/v1/matches/<match_id>/bets
+    
+    + Get user's bets on a match (USER):
+        + GET /api/v1/matches/<match_id>/bets
+    
+    + Get user's bet history (USER):
+        + GET /api/v1/users/<user_id>/bets 
+    
+    + Get all leagues: x
+        + GET /api/v1/leagues
+    
+    + Add a league (ADMIN): x
+        + POST /api/v1/leagues
+    
+    + Get details of a league: x
+        + GET /api/v1/leagues/<league_id>
+    
+    + Update a league (ADMIN): x
+        + PUT /api/v1/leagues/<league_id>
+    
+    + Delete a league (ADMIN): x
+        + DELETE /api/v1/leagues/<league_id>
+    
+    + Get fixtures of matches filtered by start-date and stop-date | league_id: x
+        + GET /api/v1/matches?from=2019-03-15&to=2019-03-21&league_id=<league_id>
+    
+    + Get fixtures of a match: x
+        + GET /api/v1/matches/<match_id>
+		+ Millionaires ranking 
+      	+ GET /api/v1/users/millionaies
 
 + Details: 
 	+ Content-Type: application/json
@@ -640,7 +641,7 @@
 			```
 
   + Millionaires ranking 
-  	+ GET /api/v1/users/millionaies
+  	+ GET /api/v1/users/millionaires
 		+ Responses:
 			+ OK:
 				+ Status Code: 200

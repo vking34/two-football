@@ -1,6 +1,7 @@
 from flask import jsonify, Blueprint, request
 from ..model.user import User
 from ..schema.user_schema import UserSchema, UpdatingProfileSchema
+from ..schema.millionaire_schema import MillionaireSchema
 from app.v1.generic.util.authorization_filter import pre_authorize
 from app.v1.generic.constant.role_constant import ROLE_USER, ROLE_ADMIN
 from app.v1.generic.util.validator import validate_payload
@@ -66,3 +67,13 @@ def save_profile(user, name, email, phone):
     from app import app
     with app.app_context():
         user.update_profile(name, email, phone)
+
+
+@users_blueprint.route('/users/millionaires', methods=['GET'])
+def get_millionaires():
+    schema = MillionaireSchema(many=True)
+
+    return jsonify({
+        'status': True,
+        'users': schema.dump(User.find_millionaires()).data
+    }), OK

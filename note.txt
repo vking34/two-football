@@ -11,10 +11,37 @@ https://www.rithmschool.com/courses/intermediate-flask/hashing-passwords-flask
 $ mysql -h sql12.freesqldatabase.com -u sql12287474 -p sql12287474 < dump.sql
 mysql -h bdk0y6kcbyxcowpuavix-mysql.services.clever-cloud.com -u ujkihaljzgfj78of -p bdk0y6kcbyxcowpuavix < dump.sql
 
-mysql -h 35.240.167.204 -u root -p two_football < dump.sql
+mysql -h 54.254.228.77 -u vking34 -p two_football < dump.sql
 
 # threading
 https://stackoverflow.com/questions/14384739/how-can-i-add-a-background-thread-to-flask
 
 # run gunicorn
 gunicorn --bind 0.0.0.0:80 "run:create_app()"
+
+# Rebuild image
+docker-compose up -d --no-deps --build backend
+
+# list stopped container
+docker container ls -aq
+
+# AWS
+manager: 54.254.228.77
+work: 18.136.103.229
+
+# ssh
+
+ssh -i key.pem ubuntu@54.254.228.77
+
+# build image
+
+docker-compose build <service-name>
+
+# push image to docker hub
+
+docker tag 2f25a5f4430d vking34/two-football-backend:latest
+docker push vking34/two-football-backend
+
+# run or update service on swarm
+
+docker stack deploy --compose-file=docker-compose-swarm.yml 2f

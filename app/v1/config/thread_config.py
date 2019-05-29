@@ -1,21 +1,24 @@
 import requests
-from datetime import datetime, timedelta
+# from datetime import datetime, timedelta
 import json
 
-POOL_TIME = 20
+POOL_TIME = 60
 
 ACTION = 'get_events'
-API_KEY = 'c28fc9ce3a86c54192c02d126d270802bb06d625cf0db3d459415ef7b025c280'
+API_KEY = '61f3a93fc374f91735aaa1b385c8427ab11e838206653f45db75a7c733ed1dc7'
 
 
 def fetch3rdAPI(league_id):
 
-    today = datetime.now()
-    from_date = today - timedelta(days=3)
-    to_date = today + timedelta(days=8)
+    # today = datetime.now()
+    # from_date = today - timedelta(days=3)
+    # to_date = today + timedelta(days=8)
+    #
+    # from_date_str = from_date.strftime('%y-%m-%d')
+    # to_date_str = to_date.strftime('%y-%m-%d')
 
-    from_date_str = from_date.strftime('%y-%m-%d')
-    to_date_str = to_date.strftime('%y-%m-%d')
+    from_date_str = '19-05-10'
+    to_date_str = '19-05-17'
 
     params = (('action', ACTION),
               ('from', from_date_str),

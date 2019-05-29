@@ -1,5 +1,5 @@
 from app import db
-from sqlalchemy import or_
+from sqlalchemy import or_, desc
 from app.v1.generic.constant.role_constant import ROLE_USER
 from app import bcrypt
 
@@ -48,7 +48,6 @@ class User(db.Model):
         db.session.add(self)
         db.session.commit()
 
-
     @classmethod
     def find_users(cls):
         return cls.query.all()
@@ -68,3 +67,7 @@ class User(db.Model):
     @classmethod
     def find_user_by_email_or_phone(cls, email, phone):
         return cls.query.filter(or_(cls.phone == phone, cls.email == email)).first()
+
+    @classmethod
+    def find_millionaires(cls):
+        return cls.query.filter_by(role=ROLE_USER).order_by(desc('balance')).limit(10).all()

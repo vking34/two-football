@@ -60,7 +60,6 @@ def create_app():
     def fetch():
         global fetchingThread
 
-        # print(fetchingThread.getName())
         fetchingThread = threading.Timer(POOL_TIME, fetch)
         fetchingThread.start()
 
@@ -71,8 +70,6 @@ def create_app():
             league_list = League.find_leagues()
 
             for league in league_list:
-                # print(league.league_id)
-                # print(type(league.league_id))
                 match_list = fetch3rdAPI(league.league_id)
 
                 if match_list is None:
@@ -96,8 +93,14 @@ def create_app():
                         awayteam_score = 0
                         yellow_card = 0
                     else:
-                        hometeam_halftime_score = int(match.get('match_hometeam_halftime_score'))
-                        awayteam_halftime_score = int(match.get('match_awayteam_halftime_score'))
+                        if match.get('match_hometeam_halftime_score') != '':
+                            hometeam_halftime_score = int(match.get('match_hometeam_halftime_score'))
+                        else:
+                            hometeam_halftime_score = 0
+                        if match.get('match_awayteam_halftime_score') != '':
+                            awayteam_halftime_score = int(match.get('match_awayteam_halftime_score'))
+                        else:
+                            awayteam_halftime_score = 0
 
                         if match.get('match_hometeam_score') == '':
                             hometeam_score = 0
@@ -118,10 +121,6 @@ def create_app():
                                 break
                         if full_time is False:
                             yellow_card = 0
-
-                    # print('match_hometeam_score: ' + str(hometeam_score))
-                    # print('match_hometeam_halftime_score: ' + str(hometeam_halftime_score))
-                    # print('yellow card: ' + str(yellow_card))
 
                     match_record = Match.find_match_by_id(match_id)
                     if match_record is None:
@@ -202,7 +201,7 @@ def create_app():
                                     bet.end(0)
 
                             # pusher
-                            event = BET_EVENT_PREFIX + str(match_id) + '_' + str(bet.user_id)
+                            event = BET_EVENT_PREFIX + str(match_id) + '_' + str(bet.bet_type) + '_' + str(bet.user_id)
                             print(event)
                             from app.v1.component.fixture.schema.match_schema import MatchSchema
                             schema = MatchSchema()
